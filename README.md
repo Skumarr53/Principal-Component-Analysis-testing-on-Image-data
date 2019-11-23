@@ -7,4 +7,4 @@ files description:
 2. PCA_VisualDemo-7bands.ipynb - notebook that has python implementation of PCA along with interesting plots and conclusion.
 
 For deatailed explaination please refer to the below article:
-https://towardsdatascience.com/principal-component-analysis-in-depth-understanding-through-image-visualization-892922f77d9f
+<br>https://towardsdatascience.com/principal-component-analysis-in-depth-understanding-through-image-visualization-892922f77d9f
