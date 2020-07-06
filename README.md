@@ -59,8 +59,7 @@ for i in range(n_bands):
 fig.delaxes(axes[-1])
 ```
 
-
-<div class="kj r cp gk"><div class="mr kl r"><div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*lBAIVXGqUEgm_d_ZNxxNbA.png?q=20" width="1542" height="678" role="presentation"></div><img class="fn uk s t u fa ai kp" width="1542" height="678" srcset="https://miro.medium.com/max/552/1*lBAIVXGqUEgm_d_ZNxxNbA.png 276w, https://miro.medium.com/max/1104/1*lBAIVXGqUEgm_d_ZNxxNbA.png 552w, https://miro.medium.com/max/1280/1*lBAIVXGqUEgm_d_ZNxxNbA.png 640w, https://miro.medium.com/max/1456/1*lBAIVXGqUEgm_d_ZNxxNbA.png 728w, https://miro.medium.com/max/1632/1*lBAIVXGqUEgm_d_ZNxxNbA.png 816w, https://miro.medium.com/max/1808/1*lBAIVXGqUEgm_d_ZNxxNbA.png 904w, https://miro.medium.com/max/1984/1*lBAIVXGqUEgm_d_ZNxxNbA.png 992w, https://miro.medium.com/max/2160/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1080w, https://miro.medium.com/max/2700/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1350w, https://miro.medium.com/max/3084/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1542w" sizes="1542px" role="presentation" src="https://miro.medium.com/max/1527/1*lBAIVXGqUEgm_d_ZNxxNbA.png"><noscript><img class="s t u fa ai" src="https://miro.medium.com/max/3084/1*lBAIVXGqUEgm_d_ZNxxNbA.png" width="1542" height="678" srcSet="https://miro.medium.com/max/552/1*lBAIVXGqUEgm_d_ZNxxNbA.png 276w, https://miro.medium.com/max/1104/1*lBAIVXGqUEgm_d_ZNxxNbA.png 552w, https://miro.medium.com/max/1280/1*lBAIVXGqUEgm_d_ZNxxNbA.png 640w, https://miro.medium.com/max/1456/1*lBAIVXGqUEgm_d_ZNxxNbA.png 728w, https://miro.medium.com/max/1632/1*lBAIVXGqUEgm_d_ZNxxNbA.png 816w, https://miro.medium.com/max/1808/1*lBAIVXGqUEgm_d_ZNxxNbA.png 904w, https://miro.medium.com/max/1984/1*lBAIVXGqUEgm_d_ZNxxNbA.png 992w, https://miro.medium.com/max/2160/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1080w, https://miro.medium.com/max/2700/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1350w, https://miro.medium.com/max/3084/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1542w" sizes="1542px" role="presentation"/></noscript></div></div>
+![](snapshots/Data_Exploration.png)
 
 If we observe the images, all bands have captured one or more surface features and also each feature is captured well in multiple bands. For example, farmlands are easily distinguishable from other surface features in both band 2 (green) and band 4 (near-infrared) image but not in others. So, there exists redundancy of information between the bands which means reflectances are somewhat correlated across bands. This gives us the right opportunity to test PCA on them.
 
@@ -82,7 +81,8 @@ MB_matrix.shape;
 
 Let us understand a little bit more about the axis transformation that happens within the PCA. The scatter plot below shows the correlation between green and red band data. Principal component axes (X2, Y2) are then determined using eigenvectors such that variance is maximum along the X2 direction and the direction orthogonal to it gives Y2 with minimum variance. The original axes (X1, Y1) are now rotated along principal component axes (X2, Y2) and the data projected on these new axes are Principal Components. It is important to note that correlations existing in original data are eliminated after transformation onto (X2, Y2) space whereas variance is partially transferred from one variable to another.
 
-<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*ZGYaB8w6ZR0V0vn6QdOr0w.png?q=20" width="829" height="796" role="presentation"></div>
+![](snapshots/PCA_scatter.png)
+
 
 ## Eigenvalues and Vectors Computation
 
@@ -134,7 +134,8 @@ b = sns.pairplot(pd.DataFrame(PC,
 b.fig.suptitle("Pair plot of PCs")
 ```
 
-<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*XpRCrTrSB-h1rEw-IrrcJQ.png?q=20" width="1715" height="834" role="presentation"></div>
+![](snapshots/pair_plot.png)
+
 *Pair plot of Bands (left) and PCs (right)*
 
 Let’s take a look at the pair plots and notice that correlation between the variables which exist in the original data has disappeared in the principal components. So, the PCA was able to reduce correlation significantly. The distribution plots along the diagonal tell us that PCA was also successful in transferring variance which is associated with compressibility.
@@ -150,7 +151,7 @@ plt.bar([1,2,3,4,5,6,7],EigVal/sum(EigVal)*100,align='center',width=0.4,
 plt.ylabel('Variance (%)')
 plt.title('Information retention');
 ```
-<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*4xO0MzFd_viCtPR87a_kGQ.png?q=20" width="647" height="469" role="presentation"></div>
+![](snapshots/bar_plot.png)
 
 The Bar plot of Eigenvalues expressed in percentage plotted above gives us the information retained in each PC. Notice that the last PCs eigenvalues are small and less significant, this is where dimensionality reduction comes into play. If we choose to keep the first three relevant components that retain 93% information then the final data can be reduced from 7 dimensions to 3 without losing much information.
 
@@ -189,7 +190,7 @@ for i in range(n_bands):
 fig.delaxes(axes[-1])
 ```
 
-<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*bZp7xzpRbCDTgiR3FR2QVA.png?q=20" width="1394" height="639" role="presentation"></div>
+![](snapshots/PCA_compress.png)
 
 *Intensities of Principal Components images*
 
@@ -208,7 +209,7 @@ axes[0].axis(‘off’);
 axes[1].imshow(PC_2d_Norm[:,:,:3][:,:,[0,2,1]].astype(int))
 axes[1].axis(‘off’);
 ```
-<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*6ZLwIcvOO5-Xk4jcbjerIw.png?q=20" width="1534" height="580" role="presentation"></div>
+![](snapshots/PCA_vs_original.png)
 
 *Comparison of RGB image (left) and principal components composite image (right)*
 
