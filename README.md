@@ -1,9 +1,9 @@
 
+# Principal Component Analysis: In-depth understanding through image visualization
+
 Principal Component Analysis (PCA) is a popular dimensionality reduction technique used in Machine Learning applications. PCA condenses information from a large set of variables into fewer variables by applying some sort of transformation onto them. The transformation is applied in such a way that linearly correlated variables get transformed into uncorrelated variables. Correlation tells us that there is redundancy of information and if this redundancy can be reduced, then information can be compressed. For example, if there are two variables in the variable set which are highly correlated, then, we are not gaining any extra information by retaining both the variables because one can be nearly expressed as the linear combination of the other. In such cases, PCA transfers the variance of the second variable onto the first variable by translation and rotation of original axes and projecting data onto new axes. The direction of projection is determined using eigenvalues and eigenvectors. So, the first few transformed features (termed as Principal Components) are rich in information, whereas the last features contain mostly noise with negligible information in them. This transferability allows us to retain the first few principal components, thus reducing the number of variables significantly with minimal loss of information.
 
 This article focuses more on practical step-by-step PCA implementation on Image data rather than a theoretical explanation as there are tons of materials already available for that. The image data has been chosen over tabular data so that the reader can better understand the working of PCA through image visualization. Technically, an image is a matrix of pixels whose brightness represents the reflectance of surface feature within that pixel. The reflectance value ranges from 0 to 255 for an 8-bit integer image. So the pixels with zero reflectance would appear as black, pixels with value 255 appear as pure white and pixels with value in-between appear in a gray tone. Landsat TM satellite Images, captured over the coastal region of India, have been used in this tutorial. The images are resized to a smaller scale to reduce computational load on the CPU. The image set consists of 7 band images captured across the blue, green, red, near-infrared (NIR) and mid-infrared (MIR) range of the electromagnetic spectrum. For readers who are interested in trying out steps on their own, kindly refer to this Github repository that contains Input datasets and the Ipython code used here. Let’s get started without further ado.
-
-<script src="https://gist.github.com/Skumarr53/02d95550cbd1442c5e2d9cb097a9737c.js"></script>
 
 ##  Loading modules and Image data
 
@@ -36,7 +36,7 @@ plt.imshow(img, vmin=0, vmax=255)
 plt.axis('off');
 ```
 
-<img class="pb ra s t u if ai ip" width="525" height="407" srcset="https://miro.medium.com/max/552/1*1Dyq44cgAveuRaPu9D_47A.png 276w, https://miro.medium.com/max/1050/1*1Dyq44cgAveuRaPu9D_47A.png 525w" sizes="525px" role="presentation" src="https://miro.medium.com/max/578/1*1Dyq44cgAveuRaPu9D_47A.png">
+<img class="fn uk s t u fa ai kp" width="525" height="407" srcset="https://miro.medium.com/max/552/1*1Dyq44cgAveuRaPu9D_47A.png 276w, https://miro.medium.com/max/1050/1*1Dyq44cgAveuRaPu9D_47A.png 525w" sizes="525px" role="presentation" src="https://miro.medium.com/max/520/1*1Dyq44cgAveuRaPu9D_47A.png">
 
 The image scene encompasses various surface features such as water, built-up area, forest, and farmland.
 
@@ -60,7 +60,7 @@ fig.delaxes(axes[-1])
 ```
 
 
-<img class="pb ra s t u if ai ip" width="1542" height="678" srcset="https://miro.medium.com/max/552/1*lBAIVXGqUEgm_d_ZNxxNbA.png 276w, https://miro.medium.com/max/1104/1*lBAIVXGqUEgm_d_ZNxxNbA.png 552w, https://miro.medium.com/max/1280/1*lBAIVXGqUEgm_d_ZNxxNbA.png 640w, https://miro.medium.com/max/1456/1*lBAIVXGqUEgm_d_ZNxxNbA.png 728w, https://miro.medium.com/max/1632/1*lBAIVXGqUEgm_d_ZNxxNbA.png 816w, https://miro.medium.com/max/1808/1*lBAIVXGqUEgm_d_ZNxxNbA.png 904w, https://miro.medium.com/max/1984/1*lBAIVXGqUEgm_d_ZNxxNbA.png 992w, https://miro.medium.com/max/2160/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1080w, https://miro.medium.com/max/2700/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1350w, https://miro.medium.com/max/3084/1*lBAIVXGqUEgm_d_ZNxxNbA.png 1542w" sizes="1542px" role="presentation" src="https://miro.medium.com/max/1696/1*lBAIVXGqUEgm_d_ZNxxNbA.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*lBAIVXGqUEgm_d_ZNxxNbA.png?q=20" width="1542" height="678" role="presentation"></div>
 
 If we observe the images, all bands have captured one or more surface features and also each feature is captured well in multiple bands. For example, farmlands are easily distinguishable from other surface features in both band 2 (green) and band 4 (near-infrared) image but not in others. So, there exists redundancy of information between the bands which means reflectances are somewhat correlated across bands. This gives us the right opportunity to test PCA on them.
 
@@ -82,7 +82,7 @@ MB_matrix.shape;
 
 Let us understand a little bit more about the axis transformation that happens within the PCA. The scatter plot below shows the correlation between green and red band data. Principal component axes (X2, Y2) are then determined using eigenvectors such that variance is maximum along the X2 direction and the direction orthogonal to it gives Y2 with minimum variance. The original axes (X1, Y1) are now rotated along principal component axes (X2, Y2) and the data projected on these new axes are Principal Components. It is important to note that correlations existing in original data are eliminated after transformation onto (X2, Y2) space whereas variance is partially transferred from one variable to another.
 
-<img class="pb ra s t u if ai ip" width="829" height="796" srcset="https://miro.medium.com/max/552/1*ZGYaB8w6ZR0V0vn6QdOr0w.png 276w, https://miro.medium.com/max/1104/1*ZGYaB8w6ZR0V0vn6QdOr0w.png 552w, https://miro.medium.com/max/1280/1*ZGYaB8w6ZR0V0vn6QdOr0w.png 640w, https://miro.medium.com/max/1400/1*ZGYaB8w6ZR0V0vn6QdOr0w.png 700w" sizes="700px" role="presentation" src="https://miro.medium.com/max/912/1*ZGYaB8w6ZR0V0vn6QdOr0w.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*ZGYaB8w6ZR0V0vn6QdOr0w.png?q=20" width="829" height="796" role="presentation"></div>
 
 ## Eigenvalues and Vectors Computation
 
@@ -134,7 +134,7 @@ b = sns.pairplot(pd.DataFrame(PC,
 b.fig.suptitle("Pair plot of PCs")
 ```
 
-<img class="pb ra s t u if ai ip" width="1715" height="834" srcset="https://miro.medium.com/max/552/1*XpRCrTrSB-h1rEw-IrrcJQ.png 276w, https://miro.medium.com/max/1104/1*XpRCrTrSB-h1rEw-IrrcJQ.png 552w, https://miro.medium.com/max/1280/1*XpRCrTrSB-h1rEw-IrrcJQ.png 640w, https://miro.medium.com/max/1456/1*XpRCrTrSB-h1rEw-IrrcJQ.png 728w, https://miro.medium.com/max/1632/1*XpRCrTrSB-h1rEw-IrrcJQ.png 816w, https://miro.medium.com/max/1808/1*XpRCrTrSB-h1rEw-IrrcJQ.png 904w, https://miro.medium.com/max/1984/1*XpRCrTrSB-h1rEw-IrrcJQ.png 992w, https://miro.medium.com/max/2160/1*XpRCrTrSB-h1rEw-IrrcJQ.png 1080w, https://miro.medium.com/max/2700/1*XpRCrTrSB-h1rEw-IrrcJQ.png 1350w, https://miro.medium.com/max/3240/1*XpRCrTrSB-h1rEw-IrrcJQ.png 1620w, https://miro.medium.com/max/3430/1*XpRCrTrSB-h1rEw-IrrcJQ.png 1715w" sizes="1715px" role="presentation" src="https://miro.medium.com/max/1887/1*XpRCrTrSB-h1rEw-IrrcJQ.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*XpRCrTrSB-h1rEw-IrrcJQ.png?q=20" width="1715" height="834" role="presentation"></div>
 *Pair plot of Bands (left) and PCs (right)*
 
 Let’s take a look at the pair plots and notice that correlation between the variables which exist in the original data has disappeared in the principal components. So, the PCA was able to reduce correlation significantly. The distribution plots along the diagonal tell us that PCA was also successful in transferring variance which is associated with compressibility.
@@ -150,8 +150,7 @@ plt.bar([1,2,3,4,5,6,7],EigVal/sum(EigVal)*100,align='center',width=0.4,
 plt.ylabel('Variance (%)')
 plt.title('Information retention');
 ```
-
-<img class="pb ra s t u if ai ip" width="647" height="469" srcset="https://miro.medium.com/max/552/1*4xO0MzFd_viCtPR87a_kGQ.png 276w, https://miro.medium.com/max/1104/1*4xO0MzFd_viCtPR87a_kGQ.png 552w, https://miro.medium.com/max/1280/1*4xO0MzFd_viCtPR87a_kGQ.png 640w, https://miro.medium.com/max/1294/1*4xO0MzFd_viCtPR87a_kGQ.png 647w" sizes="647px" role="presentation" src="https://miro.medium.com/max/712/1*4xO0MzFd_viCtPR87a_kGQ.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*4xO0MzFd_viCtPR87a_kGQ.png?q=20" width="647" height="469" role="presentation"></div>
 
 The Bar plot of Eigenvalues expressed in percentage plotted above gives us the information retained in each PC. Notice that the last PCs eigenvalues are small and less significant, this is where dimensionality reduction comes into play. If we choose to keep the first three relevant components that retain 93% information then the final data can be reduced from 7 dimensions to 3 without losing much information.
 
@@ -190,7 +189,8 @@ for i in range(n_bands):
 fig.delaxes(axes[-1])
 ```
 
-<img class="pb ra s t u if ai ip" width="1394" height="639" srcset="https://miro.medium.com/max/552/1*bZp7xzpRbCDTgiR3FR2QVA.png 276w, https://miro.medium.com/max/1104/1*bZp7xzpRbCDTgiR3FR2QVA.png 552w, https://miro.medium.com/max/1280/1*bZp7xzpRbCDTgiR3FR2QVA.png 640w, https://miro.medium.com/max/1456/1*bZp7xzpRbCDTgiR3FR2QVA.png 728w, https://miro.medium.com/max/1632/1*bZp7xzpRbCDTgiR3FR2QVA.png 816w, https://miro.medium.com/max/1808/1*bZp7xzpRbCDTgiR3FR2QVA.png 904w, https://miro.medium.com/max/1984/1*bZp7xzpRbCDTgiR3FR2QVA.png 992w, https://miro.medium.com/max/2160/1*bZp7xzpRbCDTgiR3FR2QVA.png 1080w, https://miro.medium.com/max/2700/1*bZp7xzpRbCDTgiR3FR2QVA.png 1350w, https://miro.medium.com/max/2788/1*bZp7xzpRbCDTgiR3FR2QVA.png 1394w" sizes="1394px" role="presentation" src="https://miro.medium.com/max/1533/1*bZp7xzpRbCDTgiR3FR2QVA.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*bZp7xzpRbCDTgiR3FR2QVA.png?q=20" width="1394" height="639" role="presentation"></div>
+
 *Intensities of Principal Components images*
 
 Notice that the first few PCs have rich information and are clear, and as we move towards the end, the PCs start losing information with last PCs mostly containing noise. We will retain the first three PCs and discard the rest. This will be useful in improving data quality by removing noise and also processing by machine learning algorithms efficient in terms of time and memory usage.
@@ -208,7 +208,7 @@ axes[0].axis(‘off’);
 axes[1].imshow(PC_2d_Norm[:,:,:3][:,:,[0,2,1]].astype(int))
 axes[1].axis(‘off’);
 ```
-<img class="pb ra s t u if ai ip" width="1534" height="580" srcset="https://miro.medium.com/max/552/1*6ZLwIcvOO5-Xk4jcbjerIw.png 276w, https://miro.medium.com/max/1104/1*6ZLwIcvOO5-Xk4jcbjerIw.png 552w, https://miro.medium.com/max/1280/1*6ZLwIcvOO5-Xk4jcbjerIw.png 640w, https://miro.medium.com/max/1456/1*6ZLwIcvOO5-Xk4jcbjerIw.png 728w, https://miro.medium.com/max/1632/1*6ZLwIcvOO5-Xk4jcbjerIw.png 816w, https://miro.medium.com/max/1808/1*6ZLwIcvOO5-Xk4jcbjerIw.png 904w, https://miro.medium.com/max/1984/1*6ZLwIcvOO5-Xk4jcbjerIw.png 992w, https://miro.medium.com/max/2160/1*6ZLwIcvOO5-Xk4jcbjerIw.png 1080w, https://miro.medium.com/max/2700/1*6ZLwIcvOO5-Xk4jcbjerIw.png 1350w, https://miro.medium.com/max/3068/1*6ZLwIcvOO5-Xk4jcbjerIw.png 1534w" sizes="1534px" role="presentation" src="https://miro.medium.com/max/1687/1*6ZLwIcvOO5-Xk4jcbjerIw.png">
+<div class="co kg s t u fa ai ci kh ki"><img class="s t u fa ai km kn ao yg" src="https://miro.medium.com/max/60/1*6ZLwIcvOO5-Xk4jcbjerIw.png?q=20" width="1534" height="580" role="presentation"></div>
 
 *Comparison of RGB image (left) and principal components composite image (right)*
 
