@@ -214,5 +214,3 @@ axes[1].axis(‘off’);
 *Comparison of RGB image (left) and principal components composite image (right)*
 
 Finally, we reproduced the same scene using the first three Principal components. The image on the left appears more colorful than the original image RGB which makes the features in the scene appear more clear and distinguishable from each other. Some features also appear to be more prominent in PC images that are difficult to identify in the left image. So, it can be concluded that the PCA has done a great job on our Image data in terms of compressibility and information retention.
-
-Thank you for reading. Any thoughts would be appreciated.
